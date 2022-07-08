@@ -7,9 +7,9 @@ namespace Genetic {
     public class Population<T> where T: IAiUnit, new() {
 
         public Engine? engine;
-        public static readonly int size = 100;
-        private int generation = 0;
 
+        private int size = 100;
+        private int generation = 0;
 
 
         public List<T> entities;
@@ -22,6 +22,7 @@ namespace Genetic {
 
 
 
+        public int Size { get{ return size; } set{ size = value; }}
         public int Generation { get{ return generation; }}
         public T? BestEntity { get{ return bestEntity; }}
 
