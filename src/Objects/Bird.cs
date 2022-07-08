@@ -8,8 +8,9 @@ namespace Objects {
 
         public static readonly float SIZE = 20f;
         public static readonly float JUMPINGPOWER = -400f;
-        public static readonly Vec2 GRAVITY = new Vec2(0f, 700f);
-        public static readonly Vec2 VELOCITY = new Vec2(100f, 0f);
+        
+        public static readonly Vec2 GRAVITY = new Vec2(0f, 800f);
+        public static readonly Vec2 VELOCITY = new Vec2(150f, 0f);
         public static readonly Vec2 initialPosition = new Vec2(100f, 200f);
 
 
@@ -38,7 +39,7 @@ namespace Objects {
             }
         }
 
-        public float[] Inputs { set{inputs = value; }}
+        public float[] Inputs { set{ inputs = value; }}
         public int Score { get{ return score; }}
         public float Fitness { get{ return fitness; } set{ fitness = value; }}
 
@@ -68,7 +69,6 @@ namespace Objects {
             SolidBrush brush = new SolidBrush(Color.FromArgb(50, 255, 255, 0));
 
             g.FillEllipse(brush, position.x, position.y, SIZE, SIZE);
-            g.DrawString(score.ToString(), new Font("Arial", 10), brush, position.x, position.y - 12);
 
             brush.Dispose();
         }

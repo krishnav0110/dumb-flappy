@@ -37,6 +37,10 @@ namespace NeuralNetwork {
             this.outputBias.randomize(4);
         }
 
+
+
+
+
         public Matrix think(float[] inputArray) {
             Matrix inputs = new Matrix(inputArray);
             Matrix hidden = this.hiddenWeights * inputs;
@@ -49,6 +53,10 @@ namespace NeuralNetwork {
 
             return outputs;
         }
+
+
+
+
 
         public void train(float[] inputArray, float[] targetArray) {
             Matrix inputs = new Matrix(inputArray);
@@ -103,12 +111,20 @@ namespace NeuralNetwork {
             this.hiddenBias = this.hiddenBias + hiddenGradient;
         }
 
+
+
+
+
         public void mutate(float mutationChance = 0.01f) {
             hiddenWeights.mutate(mutationChance);
             outputWeights.mutate(mutationChance);
             hiddenBias.mutate(mutationChance);
             hiddenBias.mutate(mutationChance);
         }
+
+
+
+        
 
         public NeuralNet copy() {
             NeuralNet nnCopy = new NeuralNet(inputNodes, hiddenNodes, outputNodes);

@@ -1,4 +1,5 @@
 using System.Drawing;
+using Logic;
 
 namespace MainEngine {
     public class Renderer : Form {
@@ -31,13 +32,16 @@ namespace MainEngine {
                 ControlStyles.AllPaintingInWmPaint |
                 ControlStyles.DoubleBuffer, true
             );
-            this.ClientSize = new Size(width, height);
 
-            this.Resize += new EventHandler(createBuffer);
-            this.Load += new EventHandler(createBuffer);
-            this.Paint += new PaintEventHandler(renderToScreen);
-            this.KeyDown += new KeyEventHandler(handleKeyDown);
-            this.MouseDown += new MouseEventHandler(handleMouseDown);
+            this.ClientSize  = new Size(width, height);
+            this.MaximumSize = new Size(width, height);
+            this.MinimumSize = new Size(width, height);
+
+            this.Load        += new EventHandler(createBuffer);
+            this.Resize      += new EventHandler(createBuffer);
+            this.Paint       += new PaintEventHandler(renderToScreen);
+            this.KeyDown     += new KeyEventHandler(handleKeyDown);
+            this.MouseDown   += new MouseEventHandler(handleMouseDown);
             this.FormClosing += new FormClosingEventHandler(handleExit);
         }
 
@@ -49,9 +53,10 @@ namespace MainEngine {
             if(buffer != null)
                 buffer.Dispose();
 
-            buffer = new Bitmap(ClientSize.Width, ClientSize.Height);
-            width = ClientSize.Width;
+            width  = ClientSize.Width;
             height = ClientSize.Height;
+
+            buffer = new Bitmap(ClientSize.Width, ClientSize.Height);
         }
 
 

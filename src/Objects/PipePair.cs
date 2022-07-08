@@ -5,7 +5,7 @@ namespace Objects {
     public class PipePair: IEntity {
 
         public static readonly float WIDTH = 50f;
-        public static readonly float SPACING = 125f;
+        public static readonly float SPACING = 150f;
 
         private Vec2 position = new Vec2();
 
@@ -21,6 +21,11 @@ namespace Objects {
 
         public PipePair() {
             setInitialPosition();
+        }
+
+        public PipePair(float x) {
+            setInitialPosition();
+            this.position.x = x;
         }
 
         private void setInitialPosition() {
