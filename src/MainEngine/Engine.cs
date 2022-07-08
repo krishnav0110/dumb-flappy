@@ -2,23 +2,23 @@ using InputsHandler;
 using NeuralNetwork;
 using Genetic;
 using Objects;
+using Logic;
 
 namespace MainEngine {
     public class Engine {
+
         public readonly Loop loop = new Loop();
         public readonly Renderer renderer = new Renderer();
+        public readonly Game game = new Game();
 
 
         private Population<Bird> population = new Population<Bird>();
         private List<Bird> birds = new List<Bird>();
-        private List<PipePair> pipes = new List<PipePair>(1);
-
-
-        private readonly System.Timers.Timer timer = new System.Timers.Timer(2000);
 
 
         private static float speedFactor = 1f;
 
+        public List<Bird> Birds { get{ return birds; }}
         public static float SpeedFactor { get { return speedFactor; }}
 
 
@@ -29,16 +29,10 @@ namespace MainEngine {
             this.loop.engine = this;
             this.renderer.engine = this;
             this.population.engine = this;
+            this.game.engine = this;
             this.birds = population.entities;
 
-            timer.Elapsed += updateScores;
-            timer.Enabled = true;
-            setInitialPosition();
-        }
-
-        private void setInitialPosition() {
-            pipes.Clear();
-            pipes.Add(new PipePair());
+            game.setInitialPosition();
         }
 
 
@@ -47,21 +41,19 @@ namespace MainEngine {
 
         public void update(float delta) {
             float dt = delta * speedFactor;
-
+            
             if(population.shouldStartNextGeneration())
-                setInitialPosition();
+                game.setInitialPosition();
 
-            foreach (IEntity entity in pipes) {
-                entity.update(dt);
-            }
+            game.update(dt);
 
-            PipePair nextPipe = getNextPipe();
+            PipePair nextPipe = game.getFirstPipe();
 
             foreach (Bird entity in birds) {
-                float[] inputs = new float[3] {
-                    entity.Position.x - nextPipe.Position.x,
+                float[] inputs = new float[] {
+                    entity.Position.x - nextPipe.Position.x + PipePair.WIDTH,
                     entity.Position.y - nextPipe.Position.y,
-                    Bird.VELOCITY.x,
+                    entity.Position.y - nextPipe.Position.y + PipePair.SPACING,
                 };
 
                 entity.Inputs = inputs;
@@ -74,28 +66,12 @@ namespace MainEngine {
         }
 
         public void render(Graphics g) {
-            foreach (IEntity entity in pipes) {
-                entity.render(g);
-            }
             foreach (IEntity entity in birds) {
                 entity.render(g);
             }
 
+            this.game.render(g);
             this.population.render(g);
-        }
-
-
-
-
-
-        private void updateScores(object? sender, System.Timers.ElapsedEventArgs e) {
-            foreach(Bird entity in birds) {
-                entity.updateScore();
-            }
-        }
-
-        private PipePair getNextPipe() {
-            return pipes[0];
         }
 
 
@@ -106,8 +82,8 @@ namespace MainEngine {
             KeyboardHandler.KeyPressed = key;
 
             switch(key) {
-                case Keys.D:
-                    this.toggleSpeed();
+                case Keys.F:
+                    toggleSpeed();
                 break;
             }
         }
